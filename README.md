@@ -2,7 +2,8 @@
 This simple tool analyzes and visualizes your call and SMS history from an Android phone. This tool relies on the output of the 'SMS Backup & Restore' app, which can be found on the Google Play Store here:
 https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore
 
-Use the SMS Backup & Restore app to backup your call and message logs/history. That creates a pair of XML files. Drag & drop those files into the dropbox on the webpage created by the Phone-Data-Analyzer.html file.
+# How It Works
+Use the SMS Backup & Restore app to backup your call and message logs/history. (Do NOT include attachments and media!) That creates a pair of XML files, a calls file and an SMS file. One at a time, drag & drop those files into the box on the webpage created by the Phone-Data-Analyzer.html file and it will show you pretty graphs and stats about your calling and texting.
 
 # Instructions:
 1. On your Android phone (iPhone is not supported) install the SMS Backup & Restore app
