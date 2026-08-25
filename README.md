@@ -1,5 +1,5 @@
 # Phone-Data-Analyzer
-This simple tool analyzes and visualizes your call and SMS history from an Android phone. This tool relies on the output of the 'SMS Backup & Restore' app, which can be found on the Google Play Store here:  
+This simple tool analyzes and visualizes your call and SMS history from an Android phone. This tool relies on the output of the __SMS Backup & Restore__ app, which can be found on the Google Play Store here:  
      https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore
 
 # How It Works
