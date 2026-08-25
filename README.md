@@ -3,21 +3,21 @@ This simple tool analyzes and visualizes your call and SMS history from an Andro
      https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore
 
 # How It Works
-Use the SMS Backup & Restore app to backup your call and message logs/history. (Do NOT include attachments and media!) That creates a pair of XML files, a calls file and an SMS file. One at a time, drag & drop those files into the box on the webpage created by the Phone-Data-Analyzer.html file and it will show you pretty graphs and stats about your calling and texting.
+Save the __Phone-Data-Analyzer.html__ file to your computer and open it in a browswer. Use the __SMS Backup & Restore__ app to backup your call and message logs/history. (Do __NOT__ include attachments and media!) That creates a pair of XML files, a calls file and an SMS file. One at a time, drag & drop those files into the box on the webpage created by the __Phone-Data-Analyzer.html__ file and it will show you pretty graphs and stats about your calling and texting.
 
 # Instructions
-1. On your Android phone (iPhone is not supported) install the SMS Backup & Restore app
-2. Open SMS Backup & Restore and tap Get Started
+1. On your Android phone (iPhone is not supported) install the __SMS Backup & Restore__ app
+2. Open __SMS Backup & Restore__ and tap __Get Started__
 3. If asked, grant it permission to access your phone call logs, contacts and accounts, send notifications, make & manage calls, send and view SMS messages (all these are needed to backup your phone calls and SMS messages)
-4. Tap Set Up A Backup, make sure both Messages and Call Logs are turned on, and tap "Advanced Options" and turn off "Attachments and Media". This is important. If you don't turn this off, your backups will be too large for the Phone Data Analyzer tool and it will crash.
-5. Tap Next then select where you want to the backup files to go. The simplest is Google Drive.
+4. Tap __Set Up A Backup__, make sure both Messages and Call Logs are turned on, and tap __Advanced Options__ and turn off __Attachments and Media__. This is important. If you don't turn this off, your backups will be too large for the Phone Data Analyzer tool and it will crash.
+5. Tap __Next__ then select where you want to the backup files to go. The simplest is Google Drive.
 6. As you turn on the Google Drive selection, it will ask you to login (tap Log In)
-7. When you tap Log In it will ask about permissions, select the first option (Only access to files and folders opened or created with SMS Backup & Restore), and tap OK.
+7. When you tap __Log In__ it will ask about permissions, select the first option (Only access to files and folders opened or created with __SMS Backup & Restore__), and tap __OK__.
 8. (Select which Google account you're going to use, if you have multiple on your phone)
-9. Tap Select A Folder. You can use the 3-dot menu in the upper right to create a new folder. Once you're in the folder where you want your backups to go, tap "Use This Folder". That will return you to the Setup screen, which will show the folder's name that you selected.
-10. Leave the rest of the settings at their defaults, then tap Save. That will return you to the Set Up Backup screen, and it will show which storage you've got setup. Tap Next.
-11. Turn off the Schedule Recurring Backups (if you don't want this to backup regularly)
-12. Tap Back Up Now to start the backup and you'll see a progress bar as it does it's work. It will say Backup Complete when it is done. It can take a few minutes, so be patient.
+9. Tap __Select A Folder__. You can use the 3-dot menu in the upper right to create a new folder. Once you're in the folder where you want your backups to go, tap __Use This Folder__. That will return you to the __Set Up__ screen, which will show the folder's name that you selected.
+10. Leave the rest of the settings at their defaults, then tap __Save__. That will return you to the __Set Up Backup__ screen, and it will show which storage you've got setup. Tap __Next__.
+11. Turn off the __Schedule Recurring Backups__ (if you don't want this to backup regularly)
+12. Tap __Back Up Now__ to start the backup and you'll see a progress bar as it does it's work. It will say __Backup Complete__ when it is done. It can take a few minutes, so be patient.
 13. Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.
 14. Once you've downloaded your .xml files, you can drag and drop them onto this web page to have your data analyzed.  
 
