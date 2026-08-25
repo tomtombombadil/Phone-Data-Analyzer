@@ -32,12 +32,12 @@ Call Analysis:
 SMS Analysis:
 <img width="1291" height="2112" alt="Phone-Data-Analyzer-SMS" src="https://github.com/user-attachments/assets/82346fb4-53fe-4fd5-9ac3-9d2196ac64b3" />
 
-FAQ:
-Q: Can you change the number of the Top 5 lists?
-A: Yes! You can use the drop-down to select 5, 10, 25, or 50
+# FAQ:
+  Q: Can you change the number of the Top 5 lists?  
+  A: Yes! You can use the drop-down to select 5, 10, 25, or 50  
 
-Q: Can you turn off things on the graph?
-A: Yes! The color boxes in the legend can be clicked to toggle that dataset on or off in the graph
+  Q: Can you turn off things on the graph?  
+  A: Yes! The color boxes in the legend can be clicked to toggle that dataset on or off in the graph  
 
-Q: Can you see BOTH call and SMS data at the same time?
-A: No, it's a one or the other situation. But you can switch back and forth pretty quickly by clicking the dropbox drop-down and dragging your SMS or call xml file over and dropping it in. It will refresh the page with the new data.
+  Q: Can you see BOTH call and SMS data at the same time?  
+  A: No, it's a one or the other situation. But you can switch back and forth pretty quickly by clicking the dropbox drop-down and dragging your SMS or call xml file over and dropping it in. It will refresh the page with the new data.  
