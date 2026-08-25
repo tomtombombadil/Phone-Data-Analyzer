@@ -22,3 +22,22 @@ Use the SMS Backup & Restore app to backup your call and message logs/history. T
 - Remember: your data stays right on your computer (and phone, and Google Drive). This analyzer doesn't copy or report or save your information.
 
 No data is sent anywhere you don't want it. The backups themselves are in your cloud storage or on your computer. Delete them when you're done. At no time is any information sent anywhere you don't tell it to be.
+
+Before Loading Your Info:
+<img width="1291" height="413" alt="Phone-Data-Alayzer-Blank" src="https://github.com/user-attachments/assets/6e8b66cc-fbf8-4c2f-8bd6-6b461de5dd86" />
+
+Call Analysis:
+<img width="1293" height="2214" alt="Phone-Data-Analyzer-Calls" src="https://github.com/user-attachments/assets/603682c1-58ab-4916-b316-f14b181f4a52" />
+
+SMS Analysis:
+<img width="1291" height="2112" alt="Phone-Data-Analyzer-SMS" src="https://github.com/user-attachments/assets/82346fb4-53fe-4fd5-9ac3-9d2196ac64b3" />
+
+FAQ:
+Q: Can you change the number of the Top 5 lists?
+A: Yes! You can use the drop-down to select 5, 10, 25, or 50
+
+Q: Can you turn off things on the graph?
+A: Yes! The color boxes in the legend can be clicked to toggle that dataset on or off in the graph
+
+Q: Can you see BOTH call and SMS data at the same time?
+A: No, it's a one or the other situation. But you can switch back and forth pretty quickly by clicking the dropbox drop-down and dragging your SMS or call xml file over and dropping it in. It will refresh the page with the new data.
