@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Data Analyzer (Calls & SMS)</title>
+    <!-- Pull in Chart.js for the graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #1e1e2e;
+            --panel: #282a36;
+            --text: #f8f8f2;
+            --accent: #8be9fd;
+            --border: #44475a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1, h2, h3 { color: var(--accent); }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        /* Collapsible Bars */
+        .collapse-bar {
+            background-color: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            transition: background-color 0.2s;
+        }
+        .collapse-bar:hover { background-color: #383a59; }
+        
+        .arrow { font-size: 1.2rem; transition: transform 0.3s; display: inline-block; }
+        .arrow.open { transform: rotate(180deg); }
+
+        /* Instructions Content */
+        #instructions-content {
+            background-color: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        #instructions-content ol { margin-top: 10px; padding-left: 20px; }
+        #instructions-content li { margin-bottom: 8px; }
+
+        /* Drop Zone */
+        #drop-zone-container { margin-bottom: 30px; transition: all 0.3s ease; }
+        #drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background-color: var(--panel);
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        #drop-zone:hover, #drop-zone.dragover { border-color: var(--accent); }
+        #file-input { display: none; }
+
+        .controls {
+            display: flex; align-items: center; gap: 15px;
+            margin: 40px 0 20px 0; border-top: 1px solid var(--border); padding-top: 20px;
+        }
+        select {
+            padding: 8px; border-radius: 5px; background: var(--panel);
+            color: var(--text); border: 1px solid var(--border); font-size: 16px;
+        }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px; margin-bottom: 30px;
+        }
+        .chart-container {
+            background: var(--panel); padding: 20px; border-radius: 10px;
+            border: 1px solid var(--border); position: relative; height: 350px;
+            width: 100%; box-sizing: border-box; margin-bottom: 20px;
+        }
+        .card { background: var(--panel); padding: 20px; border-radius: 10px; border: 1px solid var(--border); }
+        .card h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+        th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+        th { color: var(--accent); font-weight: normal; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Phone Data Analyzer</h1>
+    
+    <!-- Instructions Section -->
+    <div class="collapse-bar" onclick="toggleInstructions()">
+        <span>ℹ️ Instructions (Click to expand)</span>
+        <span id="instructions-arrow" class="arrow">▼</span>
+    </div>
+    <div id="instructions-content" class="hidden">
+        <p>This tool is designed for Android users utilizing the <a href="https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore" target="_blank">SMS Backup & Restore</a> app.</p>
+        <ol>
+            <li>Install SMS Backup & Restore</li>
+            <li>Open SMS Backup & Restore and tap Get Started</li>
+            <li>If asked, grant it permission to access your phone call logs, contacts and accounts, send notifications, make & manage calls, send and view SMS messages (all these are needed to backup your phone calls and SMS messages)</li>
+            <li>Tap Set Up A Backup, make sure both Messages and Call Logs are turned on, and tap "Advanced Options" and turn off "Attachments and Media". This is important. If you don't turn this off, your backups will be too large for the Phone Data Analyzer tool and it will crash.</li>
+            <li>Tap Next then select where you want to the backup files to go. The simplest is Google Drive.</li>
+            <li>As you turn on the Google Drive selection, it will ask you to login (tap Log In)</li>
+            <li>When you tap Log In it will ask about permissions, select the first option (Only access to files and folders opened or created with SMS Backup & Restore), and tap OK.</li>
+            <li>(Select which Google account you're going to use, if you have multiple on your phone)</li>
+            <li>Tap Select A Folder. You can use the 3-dot menu in the upper right to create a new folder. Once you're in the folder where you want your backups to go, tap "Use This Folder". That will return you to the Setup screen, which will show the folder's name that you selected.</li>
+            <li>Leave the rest of the settings at their defaults, then tap Save. That will return you to the Set Up Backup screen, and it will show which storage you've got setup. Tap Next.</li>
+            <li>Turn off the Schedule Recurring Backups (if you don't want this to backup regularly)</li>
+            <li>Tap Back Up Now to start the backup and you'll see a progress bar as it does it's work. It will say Backup Complete when it is done. It can take a few minutes, so be patient.</li>
+            <li>Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.</li>
+            <li>Once you've downloaded your .xml files, you can drag and drop them onto this web page to have your data analyzed.</li>
+            <li>Remember: your data stays right on your computer (and phone, and Google Drive). This analyzer doesn't copy or report or save your information.</li>
+        </ol>
+    </div>
+    
+    <!-- Collapsible Drop Zone Wrapper -->
+    <div id="drop-zone-container">
+        <div id="drop-bar" class="collapse-bar hidden" onclick="toggleDropZone()">
+            <span id="drop-bar-text">✔️ File loaded successfully.</span>
+            <span id="drop-arrow" class="arrow">▼</span>
+        </div>
+        
+        <div id="drop-zone">
+            <h3>Drag & Drop calls.xml or sms.xml here</h3>
+            <p>or click to browse for file</p>
+            <input type="file" id="file-input" accept=".xml">
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <div class="chart-container">
+            <canvas id="volChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="metricChart"></canvas>
+        </div>
+
+        <div class="grid">
+            <div class="card" id="overall-summary"></div>
+            <div class="card" id="incoming-summary"></div>
+            <div class="card" id="outgoing-summary"></div>
+        </div>
+        
+        <div class="controls">
+            <label for="topLimit"><strong>Show Top Lists Limit:</strong></label>
+            <select id="topLimit">
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+
+        <div class="grid">
+            <div class="card" id="freq-in"></div>
+            <div class="card" id="freq-out"></div>
+            <div class="card" id="vol-in"></div>
+            <div class="card" id="vol-out"></div>
+            <div class="card" id="longest-in"></div>
+            <div class="card" id="longest-out"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let globalData = [];
+    let dataType = 'calls'; // 'calls' or 'sms'
+    let volChartInstance = null;
+    let metricChartInstance = null;
+
+    const dropZone = document.getElementById('drop-zone');
+    const dropBar = document.getElementById('drop-bar');
+    const dropArrow = document.getElementById('drop-arrow');
+    const fileInput = document.getElementById('file-input');
+    const topLimitSelect = document.getElementById('topLimit');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    topLimitSelect.addEventListener('change', () => {
+        if (globalData.length > 0) renderTopLists(globalData);
+    });
+
+    function toggleInstructions() {
+        const content = document.getElementById('instructions-content');
+        const arrow = document.getElementById('instructions-arrow');
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            arrow.classList.add('open');
+        } else {
+            content.classList.add('hidden');
+            arrow.classList.remove('open');
+        }
+    }
+
+    function toggleDropZone() {
+        if (dropZone.classList.contains('hidden')) {
+            dropZone.classList.remove('hidden');
+            dropArrow.classList.add('open');
+        } else {
+            dropZone.classList.add('hidden');
+            dropArrow.classList.remove('open');
+        }
+    }
+
+    function handleFile(file) {
+        document.getElementById('drop-bar-text').innerText = `✔️ Processing: ${file.name}...`;
+        dropZone.classList.add('hidden');
+        dropBar.classList.remove('hidden');
+        dropArrow.classList.remove('open'); 
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(e.target.result, "text/xml");
+            
+            if (xmlDoc.getElementsByTagName("calls").length > 0 || xmlDoc.getElementsByTagName("call").length > 0) {
+                dataType = 'calls';
+                document.getElementById('drop-bar-text').innerText = `✔️ Call Log Loaded: ${file.name}`;
+                processCalls(xmlDoc.getElementsByTagName("call"));
+            } else if (xmlDoc.getElementsByTagName("smses").length > 0 || xmlDoc.getElementsByTagName("sms").length > 0) {
+                dataType = 'sms';
+                document.getElementById('drop-bar-text').innerText = `✔️ SMS/MMS Log Loaded: ${file.name}`;
+                processSMS(xmlDoc);
+            } else {
+                alert("Unrecognized XML format. Please use a calls or sms backup file.");
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function processCalls(nodes) {
+        let parsed = [];
+        for (let i = 0; i < nodes.length; i++) {
+            let node = nodes[i];
+            let rawNum = node.getAttribute("number") || "";
+            let cName = node.getAttribute("contact_name");
+            if (!cName || cName.includes("Unknown")) cName = rawNum;
+
+            let durSec = parseInt(node.getAttribute("duration"), 10) || 0;
+            let durMin = Math.round((durSec / 60.0) * 10) / 10;
+            let dateObj = new Date(parseInt(node.getAttribute("date"), 10));
+
+            let typeCode = node.getAttribute("type");
+            let isIncoming = ["1", "3", "4", "5", "6"].includes(typeCode);
+            
+            parsed.push({ 
+                contactName: cName, 
+                metric: durMin, 
+                date: dateObj, 
+                isIncoming: isIncoming,
+                isSuccess: durMin > 0 
+            });
+        }
+        
+        globalData = parsed.sort((a, b) => a.date - b.date);
+        finishProcessing();
+    }
+
+    function processSMS(xmlDoc) {
+        let parsed = [];
+        
+        // Process standard SMS
+        let smsNodes = xmlDoc.getElementsByTagName("sms");
+        for (let i = 0; i < smsNodes.length; i++) {
+            let node = smsNodes[i];
+            let cName = node.getAttribute("contact_name");
+            let rawNum = node.getAttribute("address") || "";
+            if (!cName || cName === "null" || cName.trim() === "(Unknown)") cName = rawNum;
+
+            let dateObj = new Date(parseInt(node.getAttribute("date"), 10));
+            let typeCode = node.getAttribute("type");
+            let body = node.getAttribute("body") || "";
+            
+            parsed.push({
+                contactName: cName,
+                metric: body.length,
+                date: dateObj,
+                isIncoming: typeCode === "1",
+                isSuccess: true 
+            });
+        }
+
+        // Process MMS/Group chats
+        let mmsNodes = xmlDoc.getElementsByTagName("mms");
+        for (let i = 0; i < mmsNodes.length; i++) {
+            let node = mmsNodes[i];
+            let cName = node.getAttribute("contact_name");
+            if (!cName || cName === "null" || cName.trim() === "") cName = "MMS/Group Chat";
+
+            let dateObj = new Date(parseInt(node.getAttribute("date"), 10));
+            let msgBox = node.getAttribute("msg_box");
+            
+            let parts = node.getElementsByTagName("part");
+            let charCount = 0;
+            for (let j = 0; j < parts.length; j++) {
+                let txt = parts[j].getAttribute("text");
+                if (txt && txt !== "null") charCount += txt.length;
+            }
+
+            parsed.push({
+                contactName: cName,
+                metric: charCount,
+                date: dateObj,
+                isIncoming: msgBox === "1",
+                isSuccess: true
+            });
+        }
+
+        globalData = parsed.sort((a, b) => a.date - b.date);
+        finishProcessing();
+    }
+
+    function finishProcessing() {
+        document.getElementById('dashboard').classList.remove('hidden');
+        renderCharts(globalData);
+        renderSummaries(globalData);
+        renderTopLists(globalData);
+    }
+
+    function renderCharts(data) {
+        const monthlyData = {};
+        
+        data.forEach(d => {
+            let yearMonth = `${d.date.getFullYear()}-${String(d.date.getMonth() + 1).padStart(2, '0')}`;
+            if (!monthlyData[yearMonth]) {
+                monthlyData[yearMonth] = { incConn: 0, incFail: 0, outConn: 0, outFail: 0, totalMetric: 0 };
+            }
+            
+            if (d.isIncoming) {
+                if (d.isSuccess) monthlyData[yearMonth].incConn++;
+                else monthlyData[yearMonth].incFail++;
+            } else {
+                if (d.isSuccess) monthlyData[yearMonth].outConn++;
+                else monthlyData[yearMonth].outFail++;
+            }
+            monthlyData[yearMonth].totalMetric += d.metric;
+        });
+
+        const labels = Object.keys(monthlyData).sort();
+        const incConnData = labels.map(l => monthlyData[l].incConn);
+        const incFailData = labels.map(l => monthlyData[l].incFail);
+        const outConnData = labels.map(l => monthlyData[l].outConn);
+        const outFailData = labels.map(l => monthlyData[l].outFail);
+        const metricData = labels.map(l => Number(monthlyData[l].totalMetric.toFixed(1)));
+
+        Chart.defaults.color = '#f8f8f2';
+        Chart.defaults.borderColor = '#44475a';
+
+        if (volChartInstance) volChartInstance.destroy();
+        if (metricChartInstance) metricChartInstance.destroy();
+
+        let termIn = dataType === 'calls' ? 'Incoming (Completed)' : 'Incoming Messages';
+        let termInF = dataType === 'calls' ? 'Incoming (Missed)' : 'Incoming (Failed)';
+        let termOut = dataType === 'calls' ? 'Outgoing (Completed)' : 'Outgoing Messages';
+        let termOutF = dataType === 'calls' ? 'Outgoing (Unanswered)' : 'Outgoing (Failed)';
+
+        const ctxVol = document.getElementById('volChart').getContext('2d');
+        volChartInstance = new Chart(ctxVol, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: termIn, data: incConnData, backgroundColor: '#3b82f6' },
+                    { label: termInF, data: incFailData, backgroundColor: '#6b7280', hidden: dataType === 'sms' },
+                    { label: termOut, data: outConnData, backgroundColor: '#10b981' },
+                    { label: termOutF, data: outFailData, backgroundColor: '#9ca3af', hidden: dataType === 'sms' }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { title: { display: true, text: 'Monthly Volume Breakdown', font: { size: 16 } } },
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+            }
+        });
+
+        let metricLabel = dataType === 'calls' ? 'Total Talk Time (Minutes)' : 'Total Message Volume (Characters)';
+        const ctxMetric = document.getElementById('metricChart').getContext('2d');
+        metricChartInstance = new Chart(ctxMetric, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: metricLabel,
+                    data: metricData,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    fill: true, tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { title: { display: true, text: metricLabel, font: { size: 16 } } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    function renderSummaries(data) {
+        if(data.length === 0) return;
+        let startDate = data[0].date;
+        let endDate = data[data.length - 1].date;
+        let daysSpan = Math.max((endDate - startDate) / (1000 * 60 * 60 * 24), 1);
+        
+        let incoming = data.filter(d => d.isIncoming);
+        let outgoing = data.filter(d => !d.isIncoming);
+        let incConn = incoming.filter(d => d.isSuccess);
+        let outConn = outgoing.filter(d => d.isSuccess);
+        let connected = data.filter(d => d.isSuccess);
+
+        let uM = dataType === 'calls' ? 'min' : 'chars';
+        let uT = dataType === 'calls' ? 'Talk Time' : 'Text Volume';
+
+        function buildSummary(label, arr, connArr, failArr) {
+            let sum = connArr.reduce((a, b) => a + b.metric, 0);
+            let failStr = dataType === 'calls' ? `, ${failArr.length} missed/unanswered` : '';
+            
+            let html = `<h2>${label}</h2><table><tr><td>Total Items</td><td>${arr.length} (${connArr.length} successful${failStr})</td></tr>`;
+            if (connArr.length > 0) {
+                let sorted = [...connArr].sort((a,b) => b.metric - a.metric);
+                html += `<tr><td>Total ${uT}</td><td>${sum.toFixed(1)} ${uM}</td></tr>
+                         <tr><td>Avg Size</td><td>${(sum / connArr.length).toFixed(1)} ${uM}</td></tr>
+                         <tr><td>Largest Item</td><td>${sorted[0].metric.toFixed(1)} ${uM} (${sorted[0].contactName})</td></tr>`;
+            }
+            
+            let cPD = arr.length / daysSpan; let mPD = sum / daysSpan;
+            let verb = dataType === 'calls' ? 'calls' : 'msgs';
+            html += `<tr><td>Avg / Day</td><td>${cPD.toFixed(2)} ${verb} (${mPD.toFixed(1)} ${uM})</td></tr>
+                     <tr><td>Avg / Month</td><td>${(cPD * 30.44).toFixed(2)} ${verb} (${(mPD * 30.44).toFixed(1)} ${uM})</td></tr></table>`;
+            return html;
+        }
+
+        document.getElementById('overall-summary').innerHTML = buildSummary("Overall Summary", data, connected, data.filter(d => !d.isSuccess));
+        document.getElementById('incoming-summary').innerHTML = buildSummary("Incoming Data", incoming, incConn, incoming.filter(d => !d.isSuccess));
+        document.getElementById('outgoing-summary').innerHTML = buildSummary("Outgoing Data", outgoing, outConn, outgoing.filter(d => !d.isSuccess));
+    }
+
+    function renderTopLists(data) {
+        const topLimit = parseInt(document.getElementById('topLimit').value, 10);
+        let incoming = data.filter(d => d.isIncoming);
+        let outgoing = data.filter(d => !d.isIncoming);
+        let incConn = incoming.filter(d => d.isSuccess);
+        let outConn = outgoing.filter(d => d.isSuccess);
+
+        let uM = dataType === 'calls' ? 'Total Min' : 'Total Chars';
+
+        function buildTable(arr, limit, title, sumMode) {
+            let agg = {};
+            arr.forEach(d => agg[d.contactName] = (agg[d.contactName] || 0) + (sumMode ? d.metric : 1));
+            let sorted = Object.entries(agg).sort((a,b) => b[1] - a[1]).slice(0, limit);
+            let html = `<h2>${title} (Top ${limit})</h2><table><tr><th>Contact</th><th>${sumMode ? uM : 'Count'}</th></tr>`;
+            sorted.forEach((i, idx) => html += `<tr><td>${idx + 1}. ${i[0]}</td><td>${sumMode ? i[1].toFixed(1) : i[1]}</td></tr>`);
+            return html + `</table>`;
+        }
+        
+        let tIn = dataType === 'calls' ? 'Most Frequent Callers' : 'Most Frequent Texters (In)';
+        let tOut = dataType === 'calls' ? 'Most Frequent Callees' : 'Most Frequent Texters (Out)';
+        let vIn = dataType === 'calls' ? 'Most Time Spent (Incoming)' : 'Highest Character Vol (In)';
+        let vOut = dataType === 'calls' ? 'Most Time Spent (Outgoing)' : 'Highest Character Vol (Out)';
+
+        document.getElementById('freq-in').innerHTML = buildTable(incoming, topLimit, tIn, false);
+        document.getElementById('freq-out').innerHTML = buildTable(outgoing, topLimit, tOut, false);
+        document.getElementById('vol-in').innerHTML = buildTable(incConn, topLimit, vIn, true);
+        document.getElementById('vol-out').innerHTML = buildTable(outConn, topLimit, vOut, true);
+
+        function longestTable(arr, limit, title) {
+            let sorted = [...arr].sort((a,b) => b.metric - a.metric).slice(0, limit);
+            let uL = dataType === 'calls' ? 'min' : 'chars';
+            let html = `<h2>${title} (Top ${limit})</h2><table><tr><th>Size</th><th>Contact</th><th>Date</th></tr>`;
+            sorted.forEach((d, idx) => html += `<tr><td>${d.metric} ${uL}</td><td>${idx + 1}. ${d.contactName}</td><td>${d.date.toISOString().split('T')[0]}</td></tr>`);
+            return html + `</table>`;
+        }
+        
+        let lIn = dataType === 'calls' ? 'Longest Calls (Incoming)' : 'Longest Messages (Incoming)';
+        let lOut = dataType === 'calls' ? 'Longest Calls (Outgoing)' : 'Longest Messages (Outgoing)';
+
+        document.getElementById('longest-in').innerHTML = longestTable(incConn, topLimit, lIn);
+        document.getElementById('longest-out').innerHTML = longestTable(outConn, topLimit, lOut);
+    }
+</script>
+</body>
+</html>
