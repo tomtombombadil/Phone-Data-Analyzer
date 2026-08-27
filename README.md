@@ -5,6 +5,10 @@ This simple tool analyzes and visualizes your call and SMS history from an Andro
 # How It Works
 Save the __Phone-Data-Analyzer.html__ file to your computer and open it in a browser. Use the __SMS Backup & Restore__ app to backup your call and message logs/history. (Do __NOT__ include attachments and media!) That creates a pair of XML files, a calls file and an SMS file. One at a time, drag & drop those files into the box on the webpage created by the __Phone-Data-Analyzer.html__ file and it will show you pretty graphs and stats about your calling and texting.
 
+# Privacy
+__Phone-Data-Analyzer__ does not share, transmit, save, copy, replicate, or in any way make your data available to anyone except you. When you backup your phone's data using the app, you have the choice of how to get those files to your computer. Your data stays in YOUR cloud storage and on YOUR computer. I can't speak for the __SMS Backup & Restore__ app, but __Phone-Data-Analyzer__ is not network aware and cannot send or share your data. I realize that it opens in a browser, but you don't even need to be connected to the Internet to use __Phone-Data-Analyzer__! At no time is any information sent anywhere you don't tell it to be.
+
+
 # Instructions
 1. On your Android phone (iPhone is not supported) install the __SMS Backup & Restore__ app
 2. Open __SMS Backup & Restore__ and tap __Get Started__
@@ -20,8 +24,6 @@ Save the __Phone-Data-Analyzer.html__ file to your computer and open it in a bro
 12. Tap __Back Up Now__ to start the backup and you'll see a progress bar as it does it's work. It will say __Backup Complete__ when it is done. It can take a few minutes, so be patient.
 13. Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.
 14. Once you've downloaded your .xml files, you can drag and drop them onto this web page to have your data analyzed.  
-
-No data is sent anywhere you don't want it. The backups themselves are in your cloud storage or on your computer. Delete them when you're done. At no time is any information sent anywhere you don't tell it to be.
 
 Before Loading Your Info:
 <img width="1291" height="413" alt="Phone-Data-Alayzer-Blank" src="https://github.com/user-attachments/assets/6e8b66cc-fbf8-4c2f-8bd6-6b461de5dd86" />
