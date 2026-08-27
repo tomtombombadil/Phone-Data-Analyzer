@@ -1,5 +1,5 @@
 # Phone-Data-Analyzer
-This simple tool analyzes and visualizes your call and SMS history from an Android phone. This tool relies on the output of the __SMS Backup & Restore__ app, which can be found on the Google Play Store here:  
+This simple tool analyzes and visualizes your call and SMS history from an Android phone. This tool relies on the output of the __SMS Backup & Restore__ app (by SyncTech Pty Ltd), which can be found on the Google Play Store here:  
      https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore
 
 # How It Works
@@ -8,8 +8,16 @@ Save the __Phone-Data-Analyzer.html__ file to your computer and open it in a bro
 # Privacy
 __Phone-Data-Analyzer__ does not share, transmit, save, copy, replicate, or in any way make your data available to anyone except you. When you backup your phone's data using the app, you have the choice of how to get those files to your computer. Your data stays in YOUR cloud storage and on YOUR computer. I can't speak for the __SMS Backup & Restore__ app, but __Phone-Data-Analyzer__ is not network aware and cannot send or share your data. I realize that it opens in a browser, but you don't even need to be connected to the Internet to use __Phone-Data-Analyzer__! At no time is any information sent anywhere you don't tell it to be.
 
-
 # Instructions
+__On Your Computer:__
+1. Right-click the link above for __Phone-Data-Analyzer.html__ and select __Save Link As__
+2. In the Save window, make sure it shows the file being saved as an HTML document, then click Save.
+3. Once you've saved it, double click the file you saved to open it in your default browser.
+4. Go to your phone and follow the instructions (below) for backing up your data and getting it to your computer.
+5. Once you have a calls-xxxxxxxxx.xml file and a sms-xxxxxxxxxx.xml file (those X's will be a time stamp, such as 20260824081122. Your will reflect the date and time you ran the backup) you can drag and drop one of them onto into the __Phone-Data-Analyzer.html__ window. Be sure to drop it in the box!
+6. Scroll through and read the information about your calls or texts. When you done look at that file, you can use the downward pointing arrow to open the drop-box again and drag and drop the other .xml file, changing the analysis info below it. Easy peasey lemon squeezey!
+
+__On Your Android Phone:__
 1. On your Android phone (iPhone is not supported) install the __SMS Backup & Restore__ app
 2. Open __SMS Backup & Restore__ and tap __Get Started__
 3. If asked, grant it permission to access your phone call logs, contacts and accounts, send notifications, make & manage calls, send and view SMS messages (all these are needed to backup your phone calls and SMS messages)
@@ -23,7 +31,10 @@ __Phone-Data-Analyzer__ does not share, transmit, save, copy, replicate, or in a
 11. Turn off the __Schedule Recurring Backups__ (if you don't want this to backup regularly)
 12. Tap __Back Up Now__ to start the backup and you'll see a progress bar as it does it's work. It will say __Backup Complete__ when it is done. It can take a few minutes, so be patient.
 13. Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.
-14. Once you've downloaded your .xml files, you can drag and drop them onto this web page to have your data analyzed.  
+14. Once you've downloaded your .xml files, you can drag and drop them onto the __Phone-Data-Analyzer.html__ web page to have your data analyzed.  
+
+# Advanced Users - Additional Privacy
+If you don't want your phone data backed up to cloud storage, you can save the files locally on your phone and NO ONE will ever see them but you. You can run the __Phone-Data-Analyzer.html__ file directly to your phone browser! Save the above html file to your phone. Then in your files application, tap it to open it in your browser. In your browser, tap the Drag & Drop box to open your phone's file picker and you'll be able to navigate to where you saved your backups and select the calls or sms .xml file and view the analysis right there on your phone. Ultimate privacy: your phone data stays on your phone!
 
 Before Loading Your Info:
 <img width="1291" height="413" alt="Phone-Data-Alayzer-Blank" src="https://github.com/user-attachments/assets/6e8b66cc-fbf8-4c2f-8bd6-6b461de5dd86" />
