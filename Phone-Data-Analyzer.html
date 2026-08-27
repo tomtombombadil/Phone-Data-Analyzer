@@ -81,21 +81,47 @@
             padding: 8px; border-radius: 5px; background: var(--panel);
             color: var(--text); border: 1px solid var(--border); font-size: 16px;
         }
+        
+        /* Grid and Cards Layout (Fixed for 3-column Desktop & responsive Mobile) */
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px; margin-bottom: 30px;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+            gap: 20px; 
+            margin-bottom: 30px;
         }
         .chart-container {
             background: var(--panel); padding: 20px; border-radius: 10px;
             border: 1px solid var(--border); position: relative; height: 350px;
             width: 100%; box-sizing: border-box; margin-bottom: 20px;
         }
-        .card { background: var(--panel); padding: 20px; border-radius: 10px; border: 1px solid var(--border); }
+        .card { 
+            background: var(--panel); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid var(--border); 
+        }
         .card h2 { margin-top: 0; font-size: 1.2rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
-        th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+            font-size: 0.95rem; 
+        }
+        th, td { 
+            text-align: left; 
+            padding: 6px 4px; 
+            border-bottom: 1px solid var(--border); 
+            word-break: break-word; /* Forces long numbers/names to wrap on small screens */
+        }
         th { color: var(--accent); font-weight: normal; }
         .hidden { display: none !important; }
+
+        /* Mobile specific padding adjustments */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            #drop-zone { padding: 20px 10px; }
+            .chart-container { padding: 10px; height: 300px; }
+        }
     </style>
 </head>
 <body>
@@ -123,9 +149,9 @@
             <li>Leave the rest of the settings at their defaults, then tap Save. That will return you to the Set Up Backup screen, and it will show which storage you've got setup. Tap Next.</li>
             <li>Turn off the Schedule Recurring Backups (if you don't want this to backup regularly)</li>
             <li>Tap Back Up Now to start the backup and you'll see a progress bar as it does it's work. It will say Backup Complete when it is done. It can take a few minutes, so be patient.</li>
-            <li>Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.</li>
-            <li>Once you've downloaded your .xml files, you can drag and drop them onto this web page to have your data analyzed.</li>
-            <li>Remember: your data stays right on your computer (and phone, and Google Drive). This analyzer doesn't copy or report or save your information.</li>
+            <li>Once it is done, you can set your phone aside. Move over to your computer (or stay right here on your phone), access Google Drive, and download the two .xml files you just created/backed-up.</li>
+            <li>Tap the box below to select your downloaded .xml file to have your data analyzed!</li>
+            <li>Remember: your data stays right on your device. This analyzer doesn't copy or report or save your information.</li>
         </ol>
     </div>
     
@@ -138,7 +164,7 @@
         
         <div id="drop-zone">
             <h3>Drag & Drop calls.xml or sms.xml here</h3>
-            <p>or click to browse for file</p>
+            <p>(Or tap here to browse your device files)</p>
             <input type="file" id="file-input" accept=".xml">
         </div>
     </div>
@@ -493,7 +519,7 @@
             let sorted = [...arr].sort((a,b) => b.metric - a.metric).slice(0, limit);
             let uL = dataType === 'calls' ? 'min' : 'chars';
             let html = `<h2>${title} (Top ${limit})</h2><table><tr><th>Size</th><th>Contact</th><th>Date</th></tr>`;
-            sorted.forEach((d, idx) => html += `<tr><td>${d.metric} ${uL}</td><td>${idx + 1}. ${d.contactName}</td><td>${d.date.toISOString().split('T')[0]}</td></tr>`);
+            sorted.forEach((d, idx) => html += `<tr><td>${d.metric} ${uL}</td><td>${idx + 1}. ${d.contactName}</td><td>${d.date.toLocaleDateString()}</td></tr>`);
             return html + `</table>`;
         }
         
