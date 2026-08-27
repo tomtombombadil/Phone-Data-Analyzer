@@ -33,9 +33,23 @@ __On Your Android Phone:__
 13. Once it is done, you can set your phone aside. We're done with it. Move over to your computer, login to Google Drive and download the two .xml files you just created/backed-up.
 14. Once you've downloaded your .xml files, you can drag and drop them onto the __Phone-Data-Analyzer.html__ web page to have your data analyzed.  
 
-# Advanced Users - Additional Privacy
-If you don't want your phone data backed up to cloud storage, you can save the files locally on your phone and NO ONE will ever see them but you. You can run the __Phone-Data-Analyzer.html__ file directly to your phone browser! Save the above html file to your phone. Then in your files application, tap it to open it in your browser. In your browser, tap the Drag & Drop box to open your phone's file picker and you'll be able to navigate to where you saved your backups and select the calls or sms .xml file and view the analysis right there on your phone. Ultimate privacy: your phone data stays on your phone!
+# Advanced Users - Ultimate Privacy
+Save Your Data & View Your Analysis Right On Your Phone - No Cloud Storage Needed!
+Instructions:
+1. Open this webpage on your phone. Tap and save the above __Phone-Data-Analyzer.html__ to your Downloads folder (or wherever you want to save it).
+2. Run the __SMS Backup & Restore__ app, just like above, except instead of choosing cloud storage (like Google Drive) for the destination of the backup, select the bottom option: Your Phone. (I know, it says it's not recommended, but we're not really using the app for a backup. We're using it for an export.)
+3. When prompted for where to store it on your phone, do NOT select the first option (Internal App Folder), select the second option (You Own Folder). Then it will ask you to select a folder, and it will likely default to your Downloads folder, but the "Use This Folder" button at the bottom will be greyed out. (Modern Android 'secures' folders from apps.) So tap the little folder-with-a-plus-sign-in-it icon at the top to create a new folder. Name it something like Backup or Call Info. When you create it, it will automatically go into that folder. Now the "Use This Folder" button at the bottom is active. Press it, and now you've set the destination for your call and sms backup to be a folder on your phone. It may pop-up a permissions request, go ahead and approve the app's access to your new folder.
+4. That puts you back at the "Configure Local Backup Location" screen. Tap OK. Then continue by tapping Next. It will ask if you're sure, tap Yes.
+5. Next it will ask you to setup a schedule for the backup to run. Since we're not really using this as a backup, we don't want to schedule it. Tap Cancel, then it will ask if you're sure. Tap OK.
+6. Now you're ready to run the backup. Tap Back Up Now at the bottom. It will create the files for you in the folder you told it to use.
+7. When it's done, close the __SMS Backup & Restore__ app and go to your Files app.
+8. In the Files app, navigate to your Downloads folder (or where you saved the __Phone-Data-Analyzer.html__ file) and tap on the __Phone-Data-Analyzer.html__ file to open the Analyzer in your browser.
+9. When the browser opens, it shows the Analyzer and the Drag & Drop box. Tap the Drag & Drop box, which will open a file picker where you can navigate to the folder where you told the app to save your calls and sms backup files. In that folder tap either the calls or sms xml file and it will open in the Analyzer.
+10. Review your info. When you're ready to analyze the other file, tap the drop-down for the Drag & Drop box and then tap the Drag & Drop box to open the file picker again. Then select your other file.
 
+Using these instructions, your phone data never leaves your phone! Complete privacy.
+
+# Screenshots
 Before Loading Your Info:
 <img width="1291" height="413" alt="Phone-Data-Alayzer-Blank" src="https://github.com/user-attachments/assets/6e8b66cc-fbf8-4c2f-8bd6-6b461de5dd86" />
 
